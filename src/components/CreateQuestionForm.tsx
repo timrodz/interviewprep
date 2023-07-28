@@ -1,10 +1,11 @@
-import { useState } from "react";
-import FormSelect from "./Select";
-import { acceptedTechnologies } from "~/utils/constants";
-import FormInput from "./Input";
-import { capitalize } from "~/utils/strings";
-import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { api, apiErrorAlert } from "~/utils/api";
+import { acceptedTechnologies } from "~/utils/constants";
+import { capitalize } from "~/utils/strings";
+import FormButton from "./form/FormButton";
+import FormInput from "./form/FormInput";
+import FormSelect from "./form/FormSelect";
 
 const formAcceptedTechnologies = [
   "Choose a technology",
@@ -29,23 +30,15 @@ export default function CreateQuestionForm() {
       submittingFormSet(true);
     },
     onSuccess: () => {
-      submittingFormSet(false);
-      route.reload();
       alert(
         "Your question has been submitted succesfully! Our mods will now work on verifying and approving it, if it meets our veracity criteria."
       );
+      route.reload();
     },
     onError: (e) => {
-      submittingFormSet(false);
-      const errorMessage = e.data?.zodError?.fieldErrors.content;
-      if (errorMessage?.[0]) {
-        alert(`An error ocurred: ${errorMessage[0]}. Please try again later.`);
-      } else {
-        alert(`An unknown error ocurred. Please try again later.`);
-      }
+      apiErrorAlert(e.data?.zodError?.fieldErrors.content?.[0]);
     },
     onSettled: () => {
-      console.log("settled");
       submittingFormSet(false);
     },
   });
@@ -57,7 +50,9 @@ export default function CreateQuestionForm() {
           label="Technology"
           options={formAcceptedTechnologies}
           value={technology}
-          onChange={(e) => technologySet(e.target.value)}
+          onChange={(e) => {
+            technologySet(e.target.value);
+          }}
         />
         <FormInput
           type="text"
@@ -78,9 +73,8 @@ export default function CreateQuestionForm() {
           value={resources}
           onChange={(e) => resourcesSet(e.target.value)}
         />
-        <button
-          type="submit"
-          className="rounded border-2 border-indigo-500 bg-indigo-500 px-4 py-2 text-white hover:underline"
+        <FormButton
+          label="Submit question for approval"
           disabled={submittingForm}
           onClick={() => {
             createMutation({
@@ -90,9 +84,7 @@ export default function CreateQuestionForm() {
               resources,
             });
           }}
-        >
-          Submit question for approval
-        </button>
+        />
       </form>
     </>
   );

@@ -1,6 +1,7 @@
 import { Question } from "@prisma/client";
 import Head from "next/head";
 import CreateQuestionForm from "~/components/CreateQuestionForm";
+import SearchBar from "~/components/SearchBar";
 import { api } from "~/utils/api";
 import { capitalize } from "~/utils/strings";
 
@@ -26,8 +27,9 @@ export default function Home() {
           </section>
           <section id="interaction">
             <h3 className="mb-4 text-xl font-bold">Create questions here</h3>
-            <div className="max-w-sm">
+            <div className="flex max-w-sm flex-col gap-4">
               <CreateQuestionForm />
+              <SearchBar />
             </div>
           </section>
           <section id="questions">
