@@ -2,6 +2,7 @@ import { Question } from "@prisma/client";
 import Head from "next/head";
 import CreateQuestionForm from "~/components/CreateQuestionForm";
 import { api } from "~/utils/api";
+import { capitalize } from "~/utils/strings";
 
 export default function Home() {
   const approvedQuestions = api.questions.getAll.useQuery({ approved: true });
@@ -74,11 +75,21 @@ function Question({ data }: { data: Question }) {
   ));
 
   return (
-    <div className=" mb-4 rounded-lg border-2 border-gray-300 p-4 ">
-      <p className="mb-2">Question: {data.title}</p>
-      <p className="mb-2">Answer: {data.answer}</p>
+    <div className="mb-4 flex flex-col gap-2 rounded-lg border-2 border-gray-300 p-4">
+      <p>
+        <b>Technology</b>:{" "}
+        <span className="font-mono">{capitalize(data.technology)}</span>
+      </p>
+      <p>
+        <b>Question</b>: {data.title}
+      </p>
+      <p>
+        <b>Answer</b>: {data.answer}
+      </p>
       {resources.length > 0 && (
-        <p className="overflow-hidden text-ellipsis">Resources: {resources}</p>
+        <p className="overflow-hidden text-ellipsis">
+          <b>Resources</b>: {resources}
+        </p>
       )}
     </div>
   );
