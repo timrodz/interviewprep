@@ -1,8 +1,8 @@
 # Interview Prep Helper
 
-## About
+There's a unique skillset involved with interview preparation. The main problem is you're often asked about things you learned 3-4 years ago, or stuff you no longer fully remember, which can make you appear as a non-ideal candidate. This project should solve that problem!
 
-Stack: [T3](https://create.t3.gg/)
+Tech stack: [T3](https://create.t3.gg/)
 
 - NextJS
 - Tailwind
