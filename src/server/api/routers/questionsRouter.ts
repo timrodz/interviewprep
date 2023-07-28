@@ -1,3 +1,7 @@
+/** TODO: Tasks
+ * 1. Paginate `getAll` queries
+ */
+
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -19,6 +23,7 @@ export const questionsRouter = createTRPCRouter({
       return ctx.prisma.question.findMany({
         where: {
           technology,
+          approved: true,
         },
       });
     }),
@@ -34,6 +39,8 @@ export const questionsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       console.log(`input: ${JSON.stringify(input)}`);
 
+      // TODO: Check for duplicates
+
       await ctx.prisma.question.create({
         data: {
           technology: input.technology.trim(),
@@ -41,6 +48,30 @@ export const questionsRouter = createTRPCRouter({
           answer: input.answer.trim(),
           resources: input.resources.trim(),
           approved: false,
+        },
+      });
+    }),
+  search: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input: query }) => {
+      console.log("Searching for term", query);
+      throw new Error("dumb");
+      return ctx.prisma.question.findFirst({
+        where: {
+          // Experiment A: just search by titlees
+          title: { contains: query },
+
+          // Experiment B: Search by title and answer
+          // OR: [
+          //   {
+          //     title: { contains: id },
+          //   },
+          //   {
+          //     answer: {
+          //       contains: id,
+          //     },
+          //   },
+          // ],
         },
       });
     }),

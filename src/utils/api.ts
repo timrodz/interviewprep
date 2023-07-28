@@ -65,3 +65,11 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+
+export function apiErrorAlert(error: string | undefined): void {
+  if (error) {
+    alert(`An error ocurred: ${error}. Please try again later.`);
+  } else {
+    alert(`An unknown error ocurred. Please try again later.`);
+  }
+}
