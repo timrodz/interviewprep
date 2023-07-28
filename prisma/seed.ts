@@ -1,6 +1,19 @@
+import { type Question } from "@prisma/client";
 import { prisma } from "../src/server/db";
 
-const information = [
+const information: Pick<
+  Question,
+  "technology" | "title" | "approved" | "answer" | "resources"
+>[] = [
+  {
+    technology: "javascript",
+    title: "What does `Set[{}, {}, {}}]` evaluate to?",
+    answer:
+      "It evaluates to `Set(3) { {}, {}, {} }`. This is because Sets store unique values of any type, including references. {} is an object, and objects are references. Only primitives (numbers, strings) are values.",
+    resources:
+      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/values",
+    approved: true,
+  },
   {
     technology: "react",
     title: "What is a hook?",
@@ -13,18 +26,16 @@ const information = [
     technology: "react",
     title: "How do you add state to a component?",
     answer:
-      "`useState` declares a state variable to be used directly. `useReducer` also does this, but it updates the variable with a reducer",
-    resources: [
-      "https://react.dev/reference/react/useState",
-      "https://react.dev/reference/react/useReducer",
-    ],
+      "`useState` declares a state variable to be used directly. `useReducer` also does this, but it updates the variable with a reducer function.",
+    resources:
+      "https://react.dev/reference/react/useState,https://react.dev/reference/react/useReducer",
     approved: true,
   },
   {
     technology: "react",
     title: "Who created React, and when?",
     answer:
-      "React was created by Meta (formerly Facebook) and released in May 29, 2013",
+      "React was created by Meta (formerly Facebook) and released in May 29, 2013.",
     resources: "https://en.wikipedia.org/wiki/React_(software)",
     approved: false,
   },
