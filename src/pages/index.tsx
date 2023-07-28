@@ -1,9 +1,8 @@
-import { Question } from "@prisma/client";
 import Head from "next/head";
 import CreateQuestionForm from "~/components/CreateQuestionForm";
-import SearchBar from "~/components/SearchBar";
+import Question from "~/components/Question";
+import QuestionSearchBar from "~/components/QuestionSearchBar";
 import { api } from "~/utils/api";
-import { capitalize } from "~/utils/strings";
 
 export default function Home() {
   const approvedQuestions = api.questions.getAll.useQuery({ approved: true });
@@ -29,7 +28,11 @@ export default function Home() {
             <h3 className="mb-4 text-xl font-bold">Create questions here</h3>
             <div className="flex max-w-sm flex-col gap-4">
               <CreateQuestionForm />
-              <SearchBar />
+              <QuestionSearchBar
+                onSearchDone={() => {
+                  console.log("search done");
+                }}
+              />
             </div>
           </section>
           <section id="questions">
@@ -50,49 +53,5 @@ export default function Home() {
         </div>
       </main>
     </>
-  );
-}
-
-function Question({ data }: { data: Question }) {
-  if (!data) {
-    return null;
-  }
-
-  // filter(Boolean) gets rid of empty objects
-  const resourceList: string[] = data.resources.split(",").filter(Boolean);
-
-  const resources = resourceList.map((r, index) => (
-    <span key={index}>
-      <a
-        key={`resource-${r}-${index}`}
-        href={r}
-        target="_blank"
-        rel="noreferrer noopener"
-        className="font-mono text-xs hover:underline md:text-base"
-      >
-        {r.replace("https://", "")}
-      </a>
-      {index < resourceList.length - 1 && ", "}
-    </span>
-  ));
-
-  return (
-    <div className="mb-4 flex flex-col gap-2 rounded-lg border-2 border-gray-300 p-4">
-      <p>
-        <b>Technology</b>:{" "}
-        <span className="font-mono">{capitalize(data.technology)}</span>
-      </p>
-      <p>
-        <b>Question</b>: {data.title}
-      </p>
-      <p>
-        <b>Answer</b>: {data.answer}
-      </p>
-      {resources.length > 0 && (
-        <p className="overflow-hidden text-ellipsis">
-          <b>Resources</b>: {resources}
-        </p>
-      )}
-    </div>
   );
 }
