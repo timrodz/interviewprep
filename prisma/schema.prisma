@@ -22,5 +22,5 @@ model Question {
     // comma-separated values that will get converted into a list for manipulation
     resources  String
 
-    @@index([technology])
+    @@index([technology, approved])
 }
