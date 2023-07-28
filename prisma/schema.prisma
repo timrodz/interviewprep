@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
@@ -20,7 +20,7 @@ model Question {
     answer     String
     approved   Boolean
     // comma-separated values that will get converted into a list for manipulation
-    resources  String
+    resources  String[]
 
     @@index([technology, approved])
 }

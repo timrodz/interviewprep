@@ -81,7 +81,7 @@ export default function CreateQuestionForm() {
               technology,
               title,
               answer,
-              resources,
+              resources: resources.split(","),
             });
           }}
         />

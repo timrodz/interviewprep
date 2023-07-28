@@ -33,7 +33,7 @@ export const questionsRouter = createTRPCRouter({
         technology: z.string(),
         title: z.string(),
         answer: z.string(),
-        resources: z.string(),
+        resources: z.array(z.string()),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -46,7 +46,7 @@ export const questionsRouter = createTRPCRouter({
           technology: input.technology.trim(),
           title: input.title.trim(),
           answer: input.answer.trim(),
-          resources: input.resources.trim(),
+          resources: input.resources.map((r) => r.trim()),
           approved: false,
         },
       });
@@ -54,24 +54,21 @@ export const questionsRouter = createTRPCRouter({
   search: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input: query }) => {
-      console.log("Searching for term", query);
-      throw new Error("dumb");
       return ctx.prisma.question.findFirst({
         where: {
           // Experiment A: just search by titlees
-          title: { contains: query },
-
+          // title: { contains: query },
           // Experiment B: Search by title and answer
-          // OR: [
-          //   {
-          //     title: { contains: id },
-          //   },
-          //   {
-          //     answer: {
-          //       contains: id,
-          //     },
-          //   },
-          // ],
+          OR: [
+            {
+              title: { contains: query },
+            },
+            {
+              answer: {
+                contains: query,
+              },
+            },
+          ],
         },
       });
     }),
