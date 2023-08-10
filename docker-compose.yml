@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: interviewprep_postgres
+    image: postgres
+    restart: always
+    environment:
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=interviewprep-admin
+      - POSTGRES_PASSWORD=interviewprep-admin-pw
+      - POSTGRES_DB=interviewprep
+    ports:
+      - 54312:5432
